@@ -1,5 +1,5 @@
 # abhishek_git
-A github profile page created usiing github REST api and server side pagibation
+A github profile page created usiing github REST api and server side pagination
 
 Download the source code 
 open terminal go to project directory
