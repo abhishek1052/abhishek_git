@@ -6,8 +6,8 @@ open terminal go to project directory
 
 write the following commands
 
-npm install
-npm start
+1) npm install
+2) npm start
 
 
 
