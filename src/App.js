@@ -3,122 +3,95 @@ import Profilepic from "./components/Profilepic";
 import Username from "./components/Username";
 import Description from "./components/Description";
 import Repo from "./components/Repo";
-import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-
-function TablePaginationActions(props) {
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
-
-  const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
-    </Box>
-  );
-}
-
-TablePaginationActions.propTypes = {
-  count: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-};
-
+import { useEffect } from 'react';
+import {
+  Card,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TablePagination
+} from '@mui/material';
 function App() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(2);
   const [username, changeUsername] = React.useState("");
   const [isloading, loadingstatus] = React.useState(true);
-  const [preuser, changepre] = React.useState("");
   const [repos, changerepos] = React.useState([]);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const [repoCount, setRepoCount] = React.useState(0);
+  const [controller, setController] = React.useState({
+    page: 0,
+    rowsPerPage: 10
+  });
+  const handlePageChange = (event, newPage) => {
+    setController({
+      ...controller,
+      page: newPage
+    });
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setController({
+      ...controller,
+      rowsPerPage: parseInt(event.target.value, 10),
+      page: 0
+
+    });
   };
-  var url = "https://api.github.com/users/" + username + "/repos";
-  if (username !== "" && username !== preuser) {
-    changepre(username);
-    fetch(url)
-      .then((response) => response.json())
-      .then(
 
-        function (data) {
+  useEffect(() => {
+    const getData = async () => {
+      var page = controller.page;
+      page++;
+      var url = "https://api.github.com/users/" + username + "/repos?page=" + page + "&per_page=" + controller.rowsPerPage;
+      if (username !== "") {
+        try {
+          fetch(url)
+            .then((response) => response.json())
+            .then(
 
-          var array = []
-          for (var i = 0; i < data.length; i++) {
-            array.push({
-              "name": data[i].name,
-              "description": data[i].description,
+              function (data) {
 
-            })
-          }
-          changerepos(array);
+                var array = []
+                for (var i = 0; i < data.length; i++) {
+                  array.push({
+                    "name": data[i].name,
+                    "description": data[i].description,
+
+                  })
+                }
+                changerepos(array);
+              }
+            )
+        } catch (error) {
+          console.log(error);
         }
-      )
-  }
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - repos.length) : 0;
+      }
+    };
+    getData();
+  }, [controller, username]);
+
+  useEffect(() => {
+    const getData = async () => {
+      var url = "https://api.github.com/users/" + username;
+      if (username !== "") {
+        try {
+          fetch(url)
+            .then((response) => response.json())
+            .then(
+
+              function (data) {
+                setRepoCount(data.public_repos)
+              }
+            )
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    getData();
+  }, [username]);
+
+
   return (
     <>
       <Username user={changeUsername} isloading={loadingstatus} />
@@ -132,49 +105,36 @@ function App() {
               <Description username={username} />
             </div>
             <div className="allrepos" >
-               <h1  >REPOSITORIES</h1> 
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-                  
+
+              <Card>
+                <Table>
+                  <TableHead>
+
+                  </TableHead>
                   <TableBody>
-                    {(rowsPerPage > 0
-                      ? repos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      : repos
-                    ).map((row, index) => (
-                      <TableRow key={row.name}>
-                        <TableCell style={{ width: 160 }} align="right">
-                          <Repo key={[index]} name={row.name} description={row.description} user={username} />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
+                    {
+                      repos.map((e, index) => {
+                        return <TableRow key={index}>
+                          <TableCell key={index}>
+                            <Repo key={index} name={e.name} description={e.description} user={username} />
+                          </TableCell>
+                        </TableRow>
+                      })
+
+                    }
+
                   </TableBody>
-                  <TableFooter>
-                    <TableRow>
-                      <TablePagination
-                        rowsPerPageOptions={[2,5, 10, 25, { label: 'All', value: -1 }]}
-                        colSpan={3}
-                        count={repos.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        SelectProps={{
-                          inputProps: {
-                            'aria-label': 'rows per page',
-                          },
-                          native: true,
-                        }}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        ActionsComponent={TablePaginationActions}
-                      />
-                    </TableRow>
-                  </TableFooter>
                 </Table>
-              </TableContainer>
+                <TablePagination
+                  component="div"
+                  onPageChange={handlePageChange}
+                  page={controller.page}
+                  count={repoCount}
+                  rowsPerPage={controller.rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </Card>
+
             </div>
           </div>
             : <div className="loader"></div>
