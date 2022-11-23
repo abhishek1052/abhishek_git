@@ -1,41 +1,44 @@
 .container {
-    background: #fff;
-    border: 1px solid #000;
-    padding: 3px;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 20px;
-    flex: 1;
-  }
-  .crop {
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-  }
-  img {
-    
-    height: 100%;
-    position: absolute;
-    margin: auto;
-    top: -100%;
-    right: -100%;
-    bottom: -100%;
-    left: -100%;
-  }
-  .center {
-    margin: auto;
-    text-align: center;
-    width: 50%;
-    height:30px;
-  }
+  background: #fff;
+  border: 1px solid #000;
+  padding: 3px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 20px;
+  flex: 1;
+}
 
-.user_info{
-  width:30%; 
-  text-align:center; 
-  float:left; 
+.crop {
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+img {
+
+  height: 100%;
+  position: absolute;
+  margin: auto;
+  top: -100%;
+  right: -100%;
+  bottom: -100%;
+  left: -100%;
+}
+
+.center {
+  margin: auto;
+  text-align: center;
+  width: 50%;
+  height: 30px;
+}
+
+.user_info {
+  width: 30%;
+  text-align: center;
+  float: left;
 }
 
 .accept-button {
@@ -55,23 +58,25 @@
   filter: brightness(115%);
 }
 
-.user_info{
+.user_info {
   display: flex;
   flex-direction: row;
   margin: 20px;
 }
 
-.desc{
+.desc {
   text-align: left;
   flex: 1;
 }
-.username{
+
+.username {
   margin: 5px;
   display: flex;
   flex-direction: row;
-  
+
 }
-.languages{
+
+.languages {
   color: #fff;
   background-color: rgb(1, 95, 130);
   width: fit-content;
@@ -80,9 +85,10 @@
   padding: 10px;
   text-align: center;
   margin: 10px;
-  
+
 }
-.Repo{
+
+.Repo {
   height: 400px;
   width: 500px;
   color: rgb(1, 95, 130);
@@ -93,25 +99,27 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  border-radius:20px ;
+  border-radius: 20px;
   text-overflow: clip;
 }
-.overallcontent{
+
+.overallcontent {
   border: 2px solid black;
   justify-content: center;
-  width: fit-content;
+  width: 100%;
   text-align: center;
-  
+
+
 }
 
-.allrepos{
+.allrepos {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
 
-.alldesc{
+.alldesc {
   overflow: hidden;
   text-overflow: inherit;
   padding: 10px;
@@ -120,34 +128,49 @@
 
 .typewriter h1 {
   overflow: hidden;
-  border-right: .15em solid orange; 
-  white-space: nowrap; 
-  margin: 0 auto; 
-  letter-spacing: .15em; 
-  animation: 
+  border-right: .15em solid orange;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: .15em;
+  animation:
     typing 5s steps(40, end),
     blink-caret .60s step-end infinite;
 }
 
 @keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+  from {
+    width: 0
+  }
+
+  to {
+    width: 100%
+  }
 }
 
 
 @keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: orange; }
+
+  from,
+  to {
+    border-color: transparent
+  }
+
+  50% {
+    border-color: orange;
+  }
 }
-.languages-bar{
+
+.languages-bar {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 16px solid #f3f3f3;
+  /* Light grey */
+  border-top: 16px solid #3498db;
+  /* Blue */
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -156,10 +179,55 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
-.profile{
+
+.profile {
   display: flex;
   flex-direction: column;
+}
+
+
+.page_404 {
+  padding: 40px 0;
+  background: #fff;
+  font-family: 'Arvo', serif;
+}
+
+.page_404 img {
+  width: 100%;
+}
+
+.four_zero_four_bg {
+
+  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+  height: 400px;
+  background-position: center;
+}
+
+
+.four_zero_four_bg h1 {
+  font-size: 80px;
+}
+
+.four_zero_four_bg h3 {
+  font-size: 80px;
+}
+
+.link_404 {
+  color: #fff !important;
+  padding: 10px 20px;
+  background: #39ac31;
+  margin: 20px 0;
+  display: inline-block;
+}
+
+.contant_box_404 {
+  margin-top: -50px;
 }
