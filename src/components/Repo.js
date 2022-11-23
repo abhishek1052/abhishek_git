@@ -6,8 +6,19 @@ const Repo = (props) => {
   var url = "https://api.github.com/repos/" + props.user + "/" + props.name + "/languages";
 
   useEffect(() => {
-    fetch(url)
-      .then((response) => response.json())
+    fetch(url, {
+      headers: {
+        'Authorization': 'token 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',
+      }
+    })
+      .then(response => {
+        if (response.status === 404) {
+          return Promise.reject('error 404');
+        }
+        else {
+          return response.json()
+        }
+      })
       .then(
         function (data) {
           var arr1 = []
@@ -16,7 +27,7 @@ const Repo = (props) => {
           });
           changearr(arr1);
         }
-      )
+      ).catch(error => { console.log("error404"); })
   })
 
 

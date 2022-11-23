@@ -12,7 +12,7 @@ const Profilepic = (props) => {
         <img src={url} alt="" />
       </div>
     </div>
-      <i class="fas fa-link"> {"https://github.com/"+props.username}  </i>
+      <i className="fas fa-link"> {"https://github.com/"+props.username}  </i>
     </div>
     </>
   )

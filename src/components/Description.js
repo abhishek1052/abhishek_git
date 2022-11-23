@@ -7,16 +7,31 @@ const Description = (props) => {
     var url = "https://api.github.com/users/" + props.username;
 
     if (props.username !== "") {
-        fetch(url)
-            .then((response) => response.json())
-            .then(
-                function (data) {
-                    changename(data.name)
-                    changebio(data.bio)
-                    changelocation(data.location)
-                    changetwitter(data.twitter_username)
+        try {
+
+            fetch(url, {
+                headers: {
+                    'Authorization': 'token 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',
                 }
-            )
+            })
+                .then(response => {
+                    if (response.status === 404) {
+                        return Promise.reject('error 404');
+                    }
+                    else {
+                        return response.json()
+                    }
+                })
+                .then(
+                    function (data) {
+                        changename(data.name)
+                        changebio(data.bio)
+                        changelocation(data.location)
+                        changetwitter(data.twitter_username)
+                    }
+                ).catch(error => { console.log("error404"); })
+        }
+        catch (error) { }
     }
     return (
         <table className='desc' >
